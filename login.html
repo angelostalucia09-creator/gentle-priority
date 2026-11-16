@@ -45,31 +45,28 @@
         const btn = document.getElementById('googleBtn');
         const status = document.getElementById('statusMsg');
 
-        btn.addEventListener('click', function() {
-            status.textContent = "Opening sign-in...";
-            const provider = new firebase.auth.GoogleAuthProvider();
-            
-            firebase.auth().signInWithPopup(provider)
-            .then((result) => {
-                status.textContent = "Welcome! Redirecting...";
+        // Handle coming back from Google sign-in
+        firebase.auth().getRedirectResult()
+        .then((result) => {
+            if (result.user) {
+                status.textContent = "Welcome back! ✅";
                 setTimeout(() => {
                     window.location.href = 'index.html';
-                }, 800);
-            })
-            .catch((error) => {
-                console.error("Error code:", error.code);
-                if (error.code === 'auth/popup-closed-by-user') {
-                    status.textContent = "Sign-in cancelled. Try again!";
-                } else if (error.code === 'auth/popup-blocked-by-browser') {
-                    status.textContent = "Popup blocked. Trying redirect...";
-                    firebase.auth().signInWithRedirect(provider);
-                } else {
-                    status.textContent = "Error: " + error.message;
-                }
-            });
+                }, 1000);
+            }
+        })
+        .catch((error) => {
+            console.error("Result error:", error);
+            status.textContent = "Note: " + error.message;
+        });
+
+        // Start sign-in when button is clicked
+        btn.addEventListener('click', function() {
+            status.textContent = "Taking you to Google...";
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithRedirect(provider);
         });
     </script>
 </body>
 </html>
-
 

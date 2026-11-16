@@ -29,28 +29,37 @@
         </div>
     </div>
 
-    <script>
-        const firebaseConfig = {
-          apiKey: "AIzaSyBeOKylPIryFlBjWUGJ_g6VFb1-nehsQ4A",
-          authDomain: "gentle-priority.firebaseapp.com",
-          projectId: "gentle-priority",
-          storageBucket: "gentle-priority.firebasestorage.app",
-          messagingSenderId: "152547079765",
-          appId: "1:152547079765:web:7ab1eee9b6f497c38506dc"
-        };
+   <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBeOKylPIryFlBjWUGJ_g6VFb1-nehsQ4A",
+      authDomain: "gentle-priority.firebaseapp.com",
+      projectId: "gentle-priority",
+      storageBucket: "gentle-priority.firebasestorage.app",
+      messagingSenderId: "152547079765",
+      appId: "1:152547079765:web:7ab1eee9b6f497c38506dc"
+    };
 
-        firebase.initializeApp(firebaseConfig);
+    firebase.initializeApp(firebaseConfig);
 
-        document.getElementById('googleSignIn').addEventListener('click', function() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            firebase.auth().signInWithPopup(provider)
-            .then((result) => {
-                window.location.href = 'index.html';
-            })
-            .catch((error) => {
-                alert("Sign-in failed: " + error.message);
-            });
-        });
-    </script>
+    // When the page loads, check if we just came back from Google sign-in
+    firebase.auth().getRedirectResult()
+    .then((result) => {
+        if (result.user) {
+            // ✅ Success — go to your homepage
+            window.location.href = 'index.html';
+        }
+    })
+    .catch((error) => {
+        console.error("Sign-in error:", error);
+        alert("Sign-in failed: " + error.message);
+    });
+
+    // When user clicks the button — start the redirect sign-in
+    document.getElementById('googleSignIn').addEventListener('click', function() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithRedirect(provider);
+    });
+</script>
+
 </body>
 </html>

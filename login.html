@@ -1,3 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gentle Priority — Sign In</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+</head>
 <body class="login-body">
     <div class="login-wrapper">
         <div class="login-card">
@@ -32,28 +43,16 @@
 
         function signInWithGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
-            
-            // Try popup FIRST
             firebase.auth().signInWithPopup(provider)
             .then((result) => {
                 window.location.href = 'index.html';
             })
             .catch((error) => {
-                console.log("Popup blocked, trying redirect...", error);
-                // If popup blocked, fall back to redirect
-                firebase.auth().signInWithRedirect(provider);
+                console.log("Popup error:", error);
+                alert("Error: " + error.message);
             });
         }
-
-        // Check if we're coming back from redirect
-        firebase.auth().getRedirectResult()
-        .then((result) => {
-            if (result.user) {
-                window.location.href = 'index.html';
-            }
-        })
-        .catch((error) => {
-            console.error("Redirect result error:", error);
-        });
     </script>
 </body>
+</html>
+

@@ -5,21 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gentle Priority — Sign In</title>
     <link rel="stylesheet" href="style.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 </head>
 <body class="login-body">
     <div class="login-wrapper">
         <div class="login-card">
             <h1>🌿 Gentle Priority</h1>
-            <p>Welcome! Sign in to continue</p>
+            <p>Continue anonymously — no account needed</p>
             
-         <button onclick="window.location.href='index.html'" class="google-btn">
-    <!-- your SVG icon here -->
-    Sign in with Google
-</button>
-
-            <p class="small-note">Your information stays private and secure 💚</p>
+            <button id="anonBtn" class="google-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" style="margin-right:10px;">
+                    <path fill="#4CAF50" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 7c-.55 0-1-.45-1-1v-2c0-.55.45-1 1-1s1 .45 1 1v2c0 .55-.45 1-1 1z"/>
+                </svg>
+                Enter as Guest
+            </button>
+            
+            <p class="small-note">Your privacy stays protected 💚</p>
+            <p id="statusMsg" style="margin-top:15px; font-size:0.9rem; color:var(--text-green);"></p>
         </div>
     </div>
+
+    <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyBeOKylPIryFlBjWUGJ_g6VFb1-nehsQ4A",
+          authDomain: "gentle-priority.firebaseapp.com",
+          projectId: "gentle-priority",
+          storageBucket: "gentle-priority.firebasestorage.app",
+          messagingSenderId: "152547079765",
+          appId: "1:152547079765:web:7ab1eee9b6f497c38506dc"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        const btn = document.getElementById('anonBtn');
+        const status = document.getElementById('statusMsg');
+
+        btn.addEventListener('click', function() {
+            status.textContent = "Opening your safe space...";
+            firebase.auth().signInAnonymously()
+            .then(() => {
+                status.textContent = "Welcome! ✅";
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 600);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                status.textContent = "Error: " + error.message;
+            });
+        });
+    </script>
 </body>
 </html>
 

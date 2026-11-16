@@ -1,21 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In — Gentle Priority</title>
-    <link rel="stylesheet" href="style.css">
-    
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-</head>
 <body class="login-body">
     <div class="login-wrapper">
         <div class="login-card">
             <h1>🌿 Gentle Priority</h1>
             <p>Sign in with your Google account to continue</p>
             
-            <button id="googleSignIn" class="google-btn">
+            <button onclick="signInWithGoogle()" class="google-btn">
                 <svg width="20" height="20" viewBox="0 0 24 24">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                     <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -29,31 +18,42 @@
         </div>
     </div>
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBeOKylPIryFlBjWUGJ_g6VFb1-nehsQ4A",
-      authDomain: "gentle-priority.firebaseapp.com",
-      projectId: "gentle-priority",
-      storageBucket: "gentle-priority.firebasestorage.app",
-      messagingSenderId: "152547079765",
-      appId: "1:152547079765:web:7ab1eee9b6f497c38506dc"
-    };
+    <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyBeOKylPIryFlBjWUGJ_g6VFb1-nehsQ4A",
+          authDomain: "gentle-priority.firebaseapp.com",
+          projectId: "gentle-priority",
+          storageBucket: "gentle-priority.firebasestorage.app",
+          messagingSenderId: "152547079765",
+          appId: "1:152547079765:web:7ab1eee9b6f497c38506dc"
+        };
 
-    firebase.initializeApp(firebaseConfig);
+        firebase.initializeApp(firebaseConfig);
 
-    document.getElementById('googleSignIn').addEventListener('click', function() {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithPopup(provider)
+        function signInWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            
+            // Try popup FIRST
+            firebase.auth().signInWithPopup(provider)
+            .then((result) => {
+                window.location.href = 'index.html';
+            })
+            .catch((error) => {
+                console.log("Popup blocked, trying redirect...", error);
+                // If popup blocked, fall back to redirect
+                firebase.auth().signInWithRedirect(provider);
+            });
+        }
+
+        // Check if we're coming back from redirect
+        firebase.auth().getRedirectResult()
         .then((result) => {
-            window.location.href = 'index.html';
+            if (result.user) {
+                window.location.href = 'index.html';
+            }
         })
         .catch((error) => {
-            console.error("Error:", error);
-            alert("Sign-in failed: " + error.message);
+            console.error("Redirect result error:", error);
         });
-    });
-</script>
-
-
+    </script>
 </body>
-</html>

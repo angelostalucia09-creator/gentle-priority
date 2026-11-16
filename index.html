@@ -6,7 +6,13 @@
     <meta name="description" content="Gentle Priority — mental health resources, articles, and support">
     <title>Gentle Priority</title>
     <link rel="stylesheet" href="style.css">
-    
+    <script>
+// If not logged in → send them to login page
+if (localStorage.getItem('isLoggedIn') !== 'yes') {
+    window.location.href = 'login.html';
+}
+</script>
+
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
       import { getFirestore } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
@@ -62,7 +68,7 @@
             <p>Welcome to Gentle Priority — a safe space for mental health resources, articles, and support. You're not alone.</p>
             <div class="hero-buttons">
                 <a href="#articles" class="btn btn-primary">Browse Articles</a>
-                <a href="financial-aid.html" class="support-button">Get Support</a>
+                <a href="financial-aid.html" class="btn btn-primary">Get Support</a>
             </div>
             <p class="hero-note">🌿 Take a deep breath. You're doing great.</p>
         </div>
@@ -254,19 +260,12 @@
                 <p>A safe space for your mental health journey. 💚</p>
             </div>
 
-            <div class="footer-links">
-                <h4>Quick Links</h4>
-                <a href="index.html">Home</a>
-                <a href="index.html#articles">Articles</a>
-                <a href="find-help.html">Find Help</a>
-                <a href="index.html#contact">Contact</a>
-            </div>
-
+           
             <div class="footer-connect">
                 <h4>Connect</h4>
                 <div class="social-links">
-                    <a href="#" target="_blank" rel="noopener">📘 Facebook</a>
-                    <a href="#" target="_blank" rel="noopener">📷 Instagram</a>
+                    <a href="https://www.facebook.com/share/g/1FDhzdgh2X/" target="_blank" rel="noopener">📘 Facebook</a>
+                    <a href="https://www.instagram.com/stalu_cia?vrfl=dmdjY3VxeDAyYjh3" target="_blank" rel="noopener">📷 Instagram</a>
                 </div>
             </div>
         </div>

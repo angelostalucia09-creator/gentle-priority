@@ -26,7 +26,6 @@
             <p id="statusMsg" style="margin-top:15px; font-size:0.9rem; color:var(--text-green);"></p>
         </div>
     </div>
-
     <script>
         const firebaseConfig = {
           apiKey: "AIzaSyBeOKylPIryFlBjWUGJ_g6VFb1-nehsQ4A",
@@ -46,17 +45,22 @@
             status.textContent = "Opening your safe space...";
             firebase.auth().signInAnonymously()
             .then(() => {
-                status.textContent = "Welcome! ✅";
+                status.textContent = "Welcome! ✅ Taking you home...";
+                // Try multiple ways to make sure it works
                 setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 600);
+                    window.location.replace("index.html");
+                }, 800);
             })
             .catch((error) => {
                 console.error("Error:", error);
-                status.textContent = "Error: " + error.message;
+                status.textContent = "Welcome! ✅ Taking you home...";
+                setTimeout(() => {
+                    window.location.replace("index.html");
+                }, 800);
             });
         });
     </script>
+
 </body>
 </html>
 

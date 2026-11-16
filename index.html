@@ -6,30 +6,24 @@
     <meta name="description" content="Gentle Priority — mental health resources, articles, and support">
     <title>Gentle Priority</title>
     <link rel="stylesheet" href="style.css">
-    <script>
-// If not logged in → send them to login page
-if (localStorage.getItem('isLoggedIn') !== 'yes') {
-    window.location.href = 'login.html';
-}
+   <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
+  
+  const firebaseConfig = {
+    apiKey: "AIzaSyBeOKylPIryFlBjWUGJ_g6VFb1-nehsQ4A",
+    authDomain: "gentle-priority.firebaseapp.com",
+    projectId: "gentle-priority",
+    storageBucket: "gentle-priority.firebasestorage.app",
+    messagingSenderId: "152547079765",
+    appId: "1:152547079765:web:7ab1eee9b6f497c38506dc"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  window.db = db;
 </script>
 
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
-      import { getFirestore } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
-      
-      const firebaseConfig = {
-        apiKey: "AIzaSyBeOKylPIryFlBjWUGJ_g6VFb1-nehsQ4A",
-        authDomain: "gentle-priority.firebaseapp.com",
-        projectId: "gentle-priority",
-        storageBucket: "gentle-priority.firebasestorage.app",
-        messagingSenderId: "152547079765",
-        appId: "1:152547079765:web:7ab1eee9b6f497c38506dc"
-      };
-
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
-      window.db = db;
-    </script>
 </head>
 <body>
 

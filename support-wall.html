@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Wall — Gentle Priority</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="538cc417-fbbb-4e00-9d2b-f706cf3ad00c.jpg" alt="Gentle Priority Logo" class="logo-img">
+                <h1>GENTLE<br>PRIORITY</h1>
+            </div>
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+            <nav class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="index.html#articles">Articles</a>
+    <a href="support-wall.html" class="active">Support Wall</a>
+    <a href="financial-aid.html">Get Support</a>
+    <a href="donate.html">Donate</a>
+</nav>
+
+            <div class="header-buttons">
+                
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>💚 The Support Wall</h1>
+        <p>Share a thought, a struggle, or a word of encouragement — anonymously. You're not alone.</p>
+    </div>
+
+    <!-- Post Form -->
+    <section class="wall-post-section">
+        <div class="post-form-card">
+            <h3>✨ Leave a Message</h3>
+            <p class="form-note">Your message will appear once it's been reviewed. No names needed — just heart-to-heart.</p>
+            
+            <textarea id="newPost" placeholder="Type something kind... 💛" maxlength="300"></textarea>
+            <div class="char-count"><span id="charCount">0</span>/300</div>
+            <button id="postBtn" class="btn btn-primary">Submit Message 💌</button>
+            <p id="postStatus" style="margin-top:15px; display:none;"></p>
+        </div>
+    </section>
+
+    <!-- Messages Wall -->
+    <section class="wall-messages-section">
+        <h2 style="text-align:center; color:var(--dark-green); font-size:1.8rem; margin-bottom:30px;">🌿 Messages from the Heart</h2>
+        <div id="messagesWall" class="messages-wall">
+            <p style="text-align:center; color:var(--text-green); grid-column:1/-1;">Loading messages...</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <p class="footer-title">GENTLE PRIORITY</p>
+                <p>A safe space for your mental health journey. 💚</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="index.html#articles">Articles</a>
+                <a href="find-help.html">Find Help</a>
+                <a href="donate.html">Donate</a>
+            </div>
+            <div class="footer-connect">
+                <h4>Connect</h4>
+                <div class="social-links">
+                    <a href="#" target="_blank" rel="noopener">📘 Facebook</a>
+                    <a href="#" target="_blank" rel="noopener">📷 Instagram</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© Angelo StaLucia. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, query, where, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyBeOKylPIryFlBjWUGJ_g6VFb1-nehsQ4A",
+            authDomain: "gentle-priority.firebaseapp.com",
+            projectId: "gentle-priority",
+            storageBucket: "gentle-priority.firebasestorage.app",
+            messagingSenderId: "152547079765",
+            appId: "1:152547079765:web:7ab1eee9b6f497c38506dc"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // ===== MOBILE MENU =====
+        document.getElementById('menuToggle').onclick = function() {
+            document.getElementById('navLinks').classList.toggle('active');
+        };
+
+        // ===== CHARACTER COUNTER =====
+        const postText = document.getElementById('newPost');
+        const charCount = document.getElementById('charCount');
+        postText.addEventListener('input', () => {
+            charCount.textContent = postText.value.length;
+        });
+
+        // ===== SUBMIT NEW POST =====
+        const postBtn = document.getElementById('postBtn');
+        const postStatus = document.getElementById('postStatus');
+        
+        postBtn.onclick = async function() {
+            const text = postText.value.trim();
+            if (!text) {
+                postStatus.textContent = "⚠️ Please write something first.";
+                postStatus.style.color = "#e65100";
+                postStatus.style.display = "block";
+                return;
+            }
+            if (text.length < 10) {
+                postStatus.textContent = "⚠️ Please write a little more — at least 10 characters.";
+                postStatus.style.color = "#e65100";
+                postStatus.style.display = "block";
+                return;
+            }
+
+            postBtn.disabled = true;
+            postBtn.textContent = "Sending...";
+            postStatus.style.display = "none";
+
+            try {
+                await addDoc(collection(db, "supportWall"), {
+                    message: text,
+                    approved: false,  // ⭐ Needs your approval first!
+                    timestamp: serverTimestamp()
+                });
+                postStatus.textContent = "✅ Thank you! Your message will appear once reviewed. 💚";
+                postStatus.style.color = "var(--dark-green)";
+                postStatus.style.display = "block";
+                postText.value = "";
+                charCount.textContent = "0";
+            } catch (err) {
+                console.error(err);
+                postStatus.textContent = "❌ Something went wrong. Please try again.";
+                postStatus.style.color = "#c62828";
+                postStatus.style.display = "block";
+            }
+            
+            postBtn.disabled = false;
+            postBtn.textContent = "Submit Message 💌";
+        };
+
+        // ===== LOAD APPROVED MESSAGES =====
+        const wall = document.getElementById('messagesWall');
+        
+        const q = query(
+            collection(db, "supportWall"),
+            where("approved", "==", true),
+            orderBy("timestamp", "desc")
+        );
+
+        onSnapshot(q, (snapshot) => {
+            if (snapshot.empty) {
+                wall.innerHTML = '<p style="text-align:center; color:var(--text-green); grid-column:1/-1;">No messages yet. Be the first to share one! 💛</p>';
+                return;
+            }
+            
+            wall.innerHTML = '';
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const date = data.timestamp ? new Date(data.timestamp.toDate()).toLocaleDateString() : '';
+                
+                const card = document.createElement('div');
+                card.className = 'message-card';
+                card.innerHTML = `
+                    <p class="message-text">"${escapeHtml(data.message)}"</p>
+                    <span class="message-date">— shared anonymously • ${date}</span>
+                `;
+                wall.appendChild(card);
+            });
+        });
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

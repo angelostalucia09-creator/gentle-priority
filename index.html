@@ -56,32 +56,27 @@
 </head>
 <body>
     <!-- Header / Navigation -->
-    <header class="header">
-        <div class="nav-container">
-            <div class="logo">
-                <img src="538cc417-fbbb-4e00-9d2b-f706cf3ad00c.jpg" alt="Gentle Priority Logo" class="logo-img">
-                <h1>GENTLE<br>PRIORITY</h1>
-            </div>
-            
-            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
-            
-            <nav class="nav-links" id="navLinks">
-                <a href="index.html">Home</a>
-                <a href="#articles">Articles</a>
-                <a href="financial-aid.html">Support</a>
-                <a href="#contact">Contact</a>
-            </nav>
-            
-            <div class="header-buttons">
-                <span id="userName" class="user-name"></span>
-                <a href="find-help.html" class="btn btn-primary">Find Help</a>
-                <a href="donate.html" class="btn btn-primary">Donate</a>
-                <a href="support-wall.html" class="btn btn-primary">Support Wall</a>
-                <button id="logoutBtn" class="btn btn-outline" style="display:none;">🚪 Log Out</button>
-
-            </div>
+ <header class="header">
+    <div class="nav-container">
+        <div class="logo">
+            <img src="538cc417-fbbb-4e00-9d2b-f706cf3ad00c.jpg" alt="Gentle Priority Logo" class="logo-img">
+            <h1>GENTLE<br>PRIORITY</h1>
         </div>
-    </header>
+
+        <nav class="nav-links">
+            <a href="index.html" class="active">Home</a>
+            <a href="index.html#articles">Articles</a>
+            <a href="support-wall.html">Support Wall</a>
+            <a href="financial-aid.html">Get Support</a>
+        </nav>
+
+        <div class="header-actions">
+            <span id="userName" class="user-greeting">Hi, Angelo Sta Lucia</span>
+            <a href="#" class="btn btn-outline" id="logoutBtn">🚪 Log Out</a>
+        </div>
+    </div>
+</header>
+
 
     <!-- Hero Section -->
     <section class="hero">

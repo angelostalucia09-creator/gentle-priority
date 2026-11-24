@@ -292,7 +292,7 @@
         <span class="affirmation-icon">🌸</span>
         <h2 id="message-heading">Daily Affirmation</h2>
         <p id="message-text">"You are enough, just as you are. Your best is enough, and you are loved."</p>
-        <button class="new-affirmation-btn" onclick="newMessage()">🔄 New Message</button>
+        <button class="new-affirmation-btn" id="myNewMessageBtn">🔄 New Message</button>
     </div>
 </div>
 
@@ -353,41 +353,55 @@
         navLinks.classList.toggle('active');
     };
 
-    // ===== DAILY MESSAGE =====
-    const messages = [
-        { type: "affirmation", text: "You are enough, just as you are. Your best is enough, and you are loved." },
-        { type: "affirmation", text: "You are worthy of peace, happiness, and all good things." },
-        { type: "affirmation", text: "You are stronger than your struggles and braver than you think." },
-        { type: "affirmation", text: "Your feelings are valid. It's okay not to be okay sometimes." },
-        { type: "affirmation", text: "You matter. Your life matters. Your story matters." },
-        { type: "affirmation", text: "Take it one day at a time. You're doing better than you know." },
-        { type: "affirmation", text: "Be gentle with yourself. You are doing the best you can." },
-        { type: "affirmation", text: "You are not alone. There is hope, and there is help." },
-        { type: "verse", text: "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.", ref: "John 3:16" },
-        { type: "verse", text: "The Lord is my shepherd; I shall not want.", ref: "Psalm 23:1" },
-        { type: "verse", text: "I can do all things through Christ which strengtheneth me.", ref: "Philippians 4:13" },
-        { type: "verse", text: "Fear thou not; for I am with thee: be not dismayed; for I am thy God: I will strengthen thee; yea, I will help thee; yea, I will uphold thee with the right hand of my righteousness.", ref: "Isaiah 41:10" },
-        { type: "verse", text: "Come unto me, all ye that labour and are heavy laden, and I will give you rest.", ref: "Matthew 11:28" },
-        { type: "verse", text: "Cast thy burden upon the Lord, and he shall sustain thee: he shall never suffer the righteous to be moved.", ref: "Psalm 55:22" },
-        { type: "verse", text: "For I know the thoughts that I think toward you, saith the Lord, thoughts of peace, and not of evil, to give you an expected end.", ref: "Jeremiah 29:11" },
-        { type: "verse", text: "He healeth the broken in heart, and bindeth up their wounds.", ref: "Psalm 147:3" }
-    ];
 
-    function newMessage() {
-        const random = Math.floor(Math.random() * messages.length);
-        const msg = messages[random];
-        
-        if (msg.type === "affirmation") {
-            document.getElementById("message-heading").textContent = "Daily Affirmation";
-            document.getElementById("message-text").innerHTML = `"${msg.text}"`;
-        } else {
-            document.getElementById("message-heading").textContent = "Daily Bible Verse";
-            document.getElementById("message-text").innerHTML = `"${msg.text}"<br><strong>— ${msg.ref}</strong>`;
-        }
+// ===== DAILY MESSAGE — CLEAN VERSION =====
+const messages = [
+    { type: "affirmation", text: "You are enough, just as you are. Your best is enough, and you are loved." },
+    { type: "affirmation", text: "You are worthy of peace, happiness, and all good things." },
+    { type: "affirmation", text: "You are stronger than your struggles and braver than you think." },
+    { type: "affirmation", text: "Your feelings are valid. It's okay not to be okay sometimes." },
+    { type: "affirmation", text: "You matter. Your life matters. Your story matters." },
+    { type: "affirmation", text: "Take it one day at a time. You're doing better than you know." },
+    { type: "affirmation", text: "Be gentle with yourself. You are doing the best you can." },
+    { type: "affirmation", text: "You are not alone. There is hope, and there is help." },
+    { type: "verse", text: "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.", ref: "John 3:16" },
+    { type: "verse", text: "The Lord is my shepherd; I shall not want.", ref: "Psalm 23:1" },
+    { type: "verse", text: "I can do all things through Christ which strengtheneth me.", ref: "Philippians 4:13" },
+    { type: "verse", text: "Fear thou not; for I am with thee: be not dismayed; for I am thy God: I will strengthen thee; yea, I will help thee; yea, I will uphold thee with the right hand of my righteousness.", ref: "Isaiah 41:10" },
+    { type: "verse", text: "Come unto me, all ye that labour and are heavy laden, and I will give you rest.", ref: "Matthew 11:28" },
+    { type: "verse", text: "Cast thy burden upon the Lord, and he shall sustain thee: he shall never suffer the righteous to be moved.", ref: "Psalm 55:22" },
+    { type: "verse", text: "For I know the thoughts that I think toward you, saith the Lord, thoughts of peace, and not of evil, to give you an expected end.", ref: "Jeremiah 29:11" },
+    { type: "verse", text: "He healeth the broken in heart, and bindeth up their wounds.", ref: "Psalm 147:3" }
+];
+
+// Show a random message
+function showNewMessage() {
+    const randomIndex = Math.floor(Math.random() * messages.length);
+    const m = messages[randomIndex];
+    
+    const heading = document.getElementById("message-heading");
+    const text = document.getElementById("message-text");
+    
+    if (m.type === "affirmation") {
+        heading.textContent = "Daily Affirmation";
+        text.innerHTML = `"${m.text}"`;
+    } else {
+        heading.textContent = "Daily Bible Verse";
+        text.innerHTML = `"${m.text}"<br><strong>— ${m.ref}</strong>`;
     }
+}
 
-// Show first message when page loads
-newMessage();  // ← ADD THIS LINE ✅
+// Wait for page to load, then set everything up
+document.addEventListener("DOMContentLoaded", function() {
+    // Show first message
+    showNewMessage();
+    
+    // When button is clicked
+    const btn = document.getElementById("myNewMessageBtn");
+    btn.addEventListener("click", showNewMessage);
+});
+</script>
+
 
         // ===== FEEDBACK FORM WITH FIREBASE =====
         const form = document.getElementById('feedbackForm');

@@ -445,5 +445,37 @@
             }, 6000);
         });
     </script>
+    <script>
+// Show user name & logout button when logged in
+firebase.auth().onAuthStateChanged(function(user) {
+    const logoutBtn = document.getElementById('logoutBtn');
+    const userNameEl = document.getElementById('userName');
+    
+    if (user) {
+        // User is logged in — show logout button and name
+        if (logoutBtn) logoutBtn.style.display = 'inline-block';
+        if (userNameEl && user.displayName) {
+            userNameEl.textContent = 'Hi, ' + user.displayName;
+        }
+    } else {
+        // Not logged in — hide everything
+        if (logoutBtn) logoutBtn.style.display = 'none';
+        if (userNameEl) userNameEl.textContent = '';
+    }
+});
+
+// Logout function
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.id === 'logoutBtn') {
+        firebase.auth().signOut().then(function() {
+            // Successfully logged out — go to login page
+            window.location.href = 'login.html';
+        }).catch(function(error) {
+            alert('Error signing out. Please try again.');
+        });
+    }
+});
+</script>
+
 </body>
 </html>

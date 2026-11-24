@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Gentle Priority — mental health resources, articles, and support">
     <title>Gentle Priority</title>
-
-    <!-- Firebase Auth Protection — MUST be first -->
+<!-- ⚠️ THIS MUST BE THE VERY FIRST SCRIPT IN <head> ⚠️ -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script>
@@ -20,12 +19,19 @@
     };
     firebase.initializeApp(firebaseConfig);
 
-    firebase.auth().onAuthStateChanged(function(user) {
-        if (!user && !window.location.pathname.includes('login.html')) {
-            window.location.href = 'login.html';
+    // Redirect immediately if not logged in
+    (function() {
+        if (!location.pathname.includes('login.html')) {
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (!user) {
+                    window.location.href = 'login.html';
+                }
+            });
         }
-    });
+    })();
     </script>
+
+    <link rel="stylesheet" href="style.css">
 
     <!-- Firestore for Contact Form -->
     <script type="module">

@@ -385,6 +385,21 @@
                 document.getElementById("message-text").innerHTML = `"${msg.text}"<br><strong>— ${msg.ref}</strong>`;
             }
         }
+function newMessage() {
+    const random = Math.floor(Math.random() * messages.length);
+    const msg = messages[random];
+    
+    if (msg.type === "affirmation") {
+        document.getElementById("message-heading").textContent = "Daily Affirmation";
+        document.getElementById("message-text").innerHTML = `"${msg.text}"`;
+    } else {
+        document.getElementById("message-heading").textContent = "Daily Bible Verse";
+        document.getElementById("message-text").innerHTML = `"${msg.text}"<br><strong>— ${msg.ref}</strong>`;
+    }
+}
+
+// Show first message when page loads
+newMessage();  // ← ADD THIS LINE ✅
 
         // ===== FEEDBACK FORM WITH FIREBASE =====
         const form = document.getElementById('feedbackForm');

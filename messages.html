@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Messages — Gentle Priority</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
+      
+      const firebaseConfig = {
+        apiKey: "AIzaSyBeOKylPIryFlBjWUGJ_g6VFb1-nehsQ4A",
+        authDomain: "gentle-priority.firebaseapp.com",
+        projectId: "gentle-priority",
+        storageBucket: "gentle-priority.firebasestorage.app",
+        messagingSenderId: "152547079765",
+        appId: "1:152547079765:web:7ab1eee9b6f497c38506dc"
+      };
+      const app = initializeApp(firebaseConfig, "MessagesPage");
+      const db = getFirestore(app);
+      window.db = db;
+    </script>
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="538cc417-fbbb-4e00-9d2b-f706cf3ad00c.jpg" alt="Gentle Priority Logo" class="logo-img">
+                <h1>GENTLE<br>PRIORITY</h1>
+            </div>
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="support-wall.html">✍️ Write a Message</a>
+                <a href="financial-aid.html">Support</a>
+            </nav>
+        </div>
+    </header>
+
+    <main style="max-width: 800px; margin: 40px auto; padding: 0 20px;">
+        <h1 style="text-align: center; color: var(--dark-green); font-size: 2rem;">💛 Community Messages</h1>
+        <p style="text-align: center; color: var(--text-green); margin-bottom: 40px;">Kind words from people like you. You're not alone.</p>
+        
+        <div id="allMessages" style="display: flex; flex-direction: column; gap: 20px;">
+            <p style="text-align:center; color:#888; padding:40px;">⏳ Loading messages...</p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 50px;">
+            <a href="support-wall.html" class="btn btn-primary">✍️ Share Your Own Message</a>
+        </div>
+    </main>
+
+    <footer style="margin-top: 80px;">
+        <div class="footer-bottom">
+            <p>© Angelo StaLucia. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
+
+        // Load all APPROVED messages
+        async function showMessages() {
+            const container = document.getElementById('allMessages');
+            
+            try {
+                const { collection, query, where, orderBy, onSnapshot } = await import("https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js");
+                
+                const q = query(
+                    collection(window.db, "supportWall"),
+                    where("approved", "==", true),
+                    orderBy("timestamp", "desc")
+                );
+                
+                onSnapshot(q, (snapshot) => {
+                    if (snapshot.empty) {
+                        container.innerHTML = '<p style="text-align:center; color:#666; padding:40px;">🌻 No messages yet. Be the first one to share!</p>';
+                        return;
+                    }
+                    
+                    container.innerHTML = '';
+                    snapshot.forEach((doc) => {
+                        const data = doc.data();
+                        const date = data.timestamp?.toDate ? new Date(data.timestamp.toDate()).toLocaleDateString('en-US', { 
+                            year: 'numeric', 
+                            month: 'long', 
+                            day: 'numeric' 
+                        }) : '';
+                        
+                        const card = document.createElement('div');
+                        card.style = 'background:white; padding:25px; border-radius:12px; border-left:4px solid #4caf50; box-shadow:0 2px 8px rgba(0,0,0,0.05);';
+                        card.innerHTML = `
+                            <p style="font-size:1.1rem; color:#333; margin:0; font-style:italic;">"${escapeHtml(data.message)}"</p>
+                            <p style="margin:12px 0 0 0; font-size:0.85rem; color:#888;">💛 ${date}</p>
+                        `;
+                        container.appendChild(card);
+                    });
+                });
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = '<p style="text-align:center; color:#666; padding:40px;">Messages will appear here soon 💚</p>';
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        showMessages();
+    </script>
+</body>
+</html>

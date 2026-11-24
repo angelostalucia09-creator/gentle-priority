@@ -6,13 +6,11 @@
     <title>Community Messages — Gentle Priority</title>
     <link rel="stylesheet" href="style.css">
     
-    <!-- Firebase -->
+    <!-- Only use ONE version — the compat version throughout -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
-      import { getFirestore } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
-      
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <script>
       const firebaseConfig = {
         apiKey: "AIzaSyBeOKylPIryFlBjWUGJ_g6VFb1-nehsQ4A",
         authDomain: "gentle-priority.firebaseapp.com",
@@ -21,8 +19,8 @@
         messagingSenderId: "152547079765",
         appId: "1:152547079765:web:7ab1eee9b6f497c38506dc"
       };
-      const app = initializeApp(firebaseConfig, "MessagesPage");
-      const db = getFirestore(app);
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
       window.db = db;
     </script>
 </head>
@@ -67,46 +65,43 @@
             document.getElementById('navLinks').classList.toggle('active');
         });
 
-        // Load all APPROVED messages
+        // Load messages using simpler getDocs instead of onSnapshot
         async function showMessages() {
             const container = document.getElementById('allMessages');
             
             try {
-                const { collection, query, where, orderBy, onSnapshot } = await import("https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js");
+                const q = firebase.firestore()
+                    .collection("supportWall")
+                    .where("approved", "==", true)
+                    .orderBy("timestamp", "desc");
                 
-                const q = query(
-                    collection(window.db, "supportWall"),
-                    where("approved", "==", true),
-                    orderBy("timestamp", "desc")
-                );
+                const snapshot = await q.get();
                 
-                onSnapshot(q, (snapshot) => {
-                    if (snapshot.empty) {
-                        container.innerHTML = '<p style="text-align:center; color:#666; padding:40px;">🌻 No messages yet. Be the first one to share!</p>';
-                        return;
-                    }
+                if (snapshot.empty) {
+                    container.innerHTML = '<p style="text-align:center; color:#666; padding:40px;">🌻 No messages yet. Be the first one to share!</p>';
+                    return;
+                }
+                
+                container.innerHTML = '';
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const date = data.timestamp ? new Date(data.timestamp.toDate()).toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    }) : '';
                     
-                    container.innerHTML = '';
-                    snapshot.forEach((doc) => {
-                        const data = doc.data();
-                        const date = data.timestamp?.toDate ? new Date(data.timestamp.toDate()).toLocaleDateString('en-US', { 
-                            year: 'numeric', 
-                            month: 'long', 
-                            day: 'numeric' 
-                        }) : '';
-                        
-                        const card = document.createElement('div');
-                        card.style = 'background:white; padding:25px; border-radius:12px; border-left:4px solid #4caf50; box-shadow:0 2px 8px rgba(0,0,0,0.05);';
-                        card.innerHTML = `
-                            <p style="font-size:1.1rem; color:#333; margin:0; font-style:italic;">"${escapeHtml(data.message)}"</p>
-                            <p style="margin:12px 0 0 0; font-size:0.85rem; color:#888;">💛 ${date}</p>
-                        `;
-                        container.appendChild(card);
-                    });
+                    const card = document.createElement('div');
+                    card.style = 'background:white; padding:25px; border-radius:12px; border-left:4px solid #4caf50; box-shadow:0 2px 8px rgba(0,0,0,0.05);';
+                    card.innerHTML = `
+                        <p style="font-size:1.1rem; color:#333; margin:0; font-style:italic;">"${escapeHtml(data.message)}"</p>
+                        <p style="margin:12px 0 0 0; font-size:0.85rem; color:#888;">💛 ${date}</p>
+                    `;
+                    container.appendChild(card);
                 });
             } catch (err) {
-                console.error(err);
-                container.innerHTML = '<p style="text-align:center; color:#666; padding:40px;">Messages will appear here soon 💚</p>';
+                console.error("Error:", err);
+                container.innerHTML = '<p style="text-align:center; color:red; padding:40px;">Error: ' + err.message + '</p>';
             }
         }
 

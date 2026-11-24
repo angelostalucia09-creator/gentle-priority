@@ -3,22 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gentle Priority — Sign In</title>
+    <title>Sign In — Gentle Priority</title>
     <link rel="stylesheet" href="style.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 </head>
 <body class="login-body">
     <div class="login-wrapper">
         <div class="login-card">
             <h1>🌿 Gentle Priority</h1>
-            <p>Continue anonymously — no account needed</p>
+            <p>Sign in to access our community and resources</p>
             
-            <a href="./index.html" class="google-btn">
-                Enter as Guest
-            </a>
+            <button id="googleSignIn" class="google-btn">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                Sign in with Google
+            </button>
             
-            <p class="small-note">Your privacy stays protected 💚</p>
+            <p class="login-note">By signing in, you agree to our community guidelines.<br>We care about your privacy and safety.</p>
         </div>
     </div>
+
+    <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyBeOKylPIryFlBjWUGJ_g6VFb1-nehsQ4A",
+          authDomain: "gentle-priority.firebaseapp.com",
+          projectId: "gentle-priority",
+          storageBucket: "gentle-priority.firebasestorage.app",
+          messagingSenderId: "152547079765",
+          appId: "1:152547079765:web:7ab1eee9b6f497c38506dc"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        const provider = new firebase.auth.GoogleAuthProvider();
+        
+        document.getElementById('googleSignIn').addEventListener('click', () => {
+            firebase.auth().signInWithPopup(provider)
+            .then((result) => {
+                const user = result.user;
+                localStorage.setItem('userName', user.displayName);
+                localStorage.setItem('userEmail', user.email);
+                window.location.href = 'index.html';
+            })
+            .catch((error) => {
+                console.error("Error:", error.message);
+                alert("Something went wrong. Please try again.");
+            });
+        });
+    </script>
 </body>
 </html>
-

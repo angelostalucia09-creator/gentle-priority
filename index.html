@@ -6,27 +6,35 @@
     <meta name="description" content="Gentle Priority — mental health resources, articles, and support">
     <title>Gentle Priority</title>
     <link rel="stylesheet" href="style.css">
-   <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
-  
-  const firebaseConfig = {
-    apiKey: "AIzaSyBeOKylPIryFlBjWUGJ_g6VFb1-nehsQ4A",
-    authDomain: "gentle-priority.firebaseapp.com",
-    projectId: "gentle-priority",
-    storageBucket: "gentle-priority.firebasestorage.app",
-    messagingSenderId: "152547079765",
-    appId: "1:152547079765:web:7ab1eee9b6f497c38506dc"
-  };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  window.db = db;
-</script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gentle Priority — mental health resources, articles, and support">
+    <title>Gentle Priority</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
+      
+      const firebaseConfig = {
+        apiKey: "AIzaSyBeOKylPIryFlBjWUGJ_g6VFb1-nehsQ4A",
+        authDomain: "gentle-priority.firebaseapp.com",
+        projectId: "gentle-priority",
+        storageBucket: "gentle-priority.firebasestorage.app",
+        messagingSenderId: "152547079765",
+        appId: "1:152547079765:web:7ab1eee9b6f497c38506dc"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      window.db = db;
+    </script>
+</head>
 
 </head>
 <body>
-
     <!-- Header / Navigation -->
     <header class="header">
         <div class="nav-container">
@@ -206,7 +214,68 @@
                     <p>How it shows up in adults, common triggers, and healthy ways to feel secure on your own.</p>
                     <a href="separation-anxiety-understanding.html" class="read-more">Read More →</a>
                 </div>
+           
             </div>
+        <div class="article-card">
+    <img src="depression.jpg" alt="Major Depressive Disorder" class="article-img">
+    <div class="article-content">
+        <span class="article-tag">DEPRESSION</span>
+        <h3>Major Depressive Disorder</h3>
+        <p>Persistent sadness, loss of interest, and changes that affect daily life.</p>
+        <a href="depression-major.html" class="read-more">Read More →</a>
+    </div>
+</div>
+
+<div class="article-card">
+    <img src="depression.jpg" alt="Persistent Depressive Disorder" class="article-img">
+    <div class="article-content">
+        <span class="article-tag">DEPRESSION</span>
+        <h3>Persistent Depressive Disorder</h3>
+        <p>Depression that lasts two years or more — you don't have to carry it alone.</p>
+        <a href="depression-persistent.html" class="read-more">Read More →</a>
+    </div>
+</div>
+
+<div class="article-card">
+    <img src="depression.jpg" alt="Perinatal & Postpartum Depression" class="article-img">
+    <div class="article-content">
+        <span class="article-tag">DEPRESSION</span>
+        <h3>Perinatal & Postpartum Depression</h3>
+        <p>During pregnancy or after birth — it's not weakness, and it gets better with care.</p>
+        <a href="depression-perinatal.html" class="read-more">Read More →</a>
+    </div>
+</div>
+
+<div class="article-card">
+    <img src="depression.jpg" alt="Seasonal Affective Disorder" class="article-img">
+    <div class="article-content">
+        <span class="article-tag">DEPRESSION</span>
+        <h3>Seasonal Affective Disorder</h3>
+        <p>Feeling down when days get shorter — brighter seasons are coming.</p>
+        <a href="depression-seasonal.html" class="read-more">Read More →</a>
+    </div>
+</div>
+
+<div class="article-card">
+    <img src="depression.jpg" alt="Premenstrual Dysphoric Disorder" class="article-img">
+    <div class="article-content">
+        <span class="article-tag">DEPRESSION</span>
+        <h3>Premenstrual Dysphoric Disorder</h3>
+        <p>More than PMS — intense mood changes that improve each cycle.</p>
+        <a href="depression-pmdd.html" class="read-more">Read More →</a>
+    </div>
+</div>
+
+<div class="article-card">
+    <img src="depression.jpg" alt="Atypical Depression" class="article-img">
+    <div class="article-content">
+        <span class="article-tag">DEPRESSION</span>
+        <h3>Atypical Depression</h3>
+        <p>Your mood can lift — but the heaviness stays. It's valid and treatable.</p>
+        <a href="depression-atypical.html" class="read-more">Read More →</a>
+    </div>
+</div>
+
         </div>
     </section>
 

@@ -71,10 +71,9 @@
             
             try {
                 const q = firebase.firestore()
-                    .collection("supportWall")
-                    .where("approved", "==", true)
-                    .orderBy("timestamp", "desc");
-                
+    .collection("supportWall")
+    .where("approved", "==", true);
+
                 const snapshot = await q.get();
                 
                 if (snapshot.empty) {
